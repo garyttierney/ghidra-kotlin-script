@@ -16,7 +16,7 @@ class KotlinScriptProvider : GhidraScriptProvider() {
     }
 
     override fun getExtension(): String {
-        return GHIDRA_KOTLIN_SCRIPT_EXTENSION
+        return ".${GHIDRA_KOTLIN_SCRIPT_EXTENSION}"
     }
 
     override fun getScriptInstance(sourceFile: ResourceFile, writer: PrintWriter): GhidraScript {
