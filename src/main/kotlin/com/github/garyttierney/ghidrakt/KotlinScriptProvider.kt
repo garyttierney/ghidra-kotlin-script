@@ -1,6 +1,6 @@
 package com.github.garyttierney.ghidrakt
 
-import com.github.garyttierney.ghidrakt.api.GHIDRA_KOTLIN_SCRIPT_EXTENSION
+import com.github.garyttierney.ghidrakt.host.GHIDRA_KOTLIN_SCRIPT_EXTENSION
 
 import generic.jar.ResourceFile
 import ghidra.app.script.GhidraScript
@@ -16,7 +16,7 @@ class KotlinScriptProvider : GhidraScriptProvider() {
     }
 
     override fun getExtension(): String {
-        return ".${GHIDRA_KOTLIN_SCRIPT_EXTENSION}"
+        return ".$GHIDRA_KOTLIN_SCRIPT_EXTENSION"
     }
 
     override fun getScriptInstance(sourceFile: ResourceFile, writer: PrintWriter): GhidraScript {

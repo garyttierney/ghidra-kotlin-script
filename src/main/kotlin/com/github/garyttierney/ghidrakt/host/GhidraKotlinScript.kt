@@ -1,4 +1,4 @@
-package com.github.garyttierney.ghidrakt.api
+package com.github.garyttierney.ghidrakt.host
 
 import kotlin.script.experimental.annotations.KotlinScript
 

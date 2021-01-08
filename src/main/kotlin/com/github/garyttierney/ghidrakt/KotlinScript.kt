@@ -1,8 +1,12 @@
 package com.github.garyttierney.ghidrakt
 
-import com.github.garyttierney.ghidrakt.api.GhidraKotlinScript
-import com.github.garyttierney.ghidrakt.api.GhidraKotlinScriptEvaluationConfiguration
+import com.github.garyttierney.ghidrakt.host.GhidraKotlinScript
+import com.github.garyttierney.ghidrakt.host.GhidraKotlinScriptEvaluationConfiguration
+import ghidra.app.decompiler.flatapi.FlatDecompilerAPI
 import ghidra.app.script.GhidraScript
+import ghidra.program.model.address.Address
+import ghidra.program.util.ProgramLocation
+import ghidra.program.util.ProgramSelection
 import java.io.BufferedReader
 import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvm.util.isError
@@ -11,6 +15,13 @@ import kotlin.script.experimental.jvmhost.BasicJvmScriptingHost
 import kotlin.script.experimental.jvmhost.createJvmCompilationConfigurationFromTemplate
 
 class KotlinScript(private val host: BasicJvmScriptingHost) : GhidraScript() {
+    val decompiler: FlatDecompilerAPI
+        get() = FlatDecompilerAPI(this)
+
+    var currentLocation: ProgramLocation by this::currentLocation
+    var currentSelection: ProgramSelection by this::currentSelection
+    var currentAddress: Address by this::currentAddress
+
     override fun run() {
         val compileConfiguration = createJvmCompilationConfigurationFromTemplate<GhidraKotlinScript>()
         val evaluationConfiguration = GhidraKotlinScriptEvaluationConfiguration(this)
