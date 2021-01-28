@@ -1,10 +1,11 @@
 package com.github.garyttierney.ghidrakt
 
-import com.github.garyttierney.ghidrakt.host.GhidraKotlinScript
+import com.github.garyttierney.ghidrakt.api.GhidraKotlinScript
 import com.github.garyttierney.ghidrakt.host.GhidraKotlinScriptEvaluationConfiguration
 import ghidra.app.decompiler.flatapi.FlatDecompilerAPI
 import ghidra.app.script.GhidraScript
 import ghidra.program.model.address.Address
+import ghidra.program.model.listing.Function
 import ghidra.program.util.ProgramLocation
 import ghidra.program.util.ProgramSelection
 import java.io.BufferedReader
@@ -21,6 +22,7 @@ class KotlinScript(private val host: BasicJvmScriptingHost) : GhidraScript() {
     var currentLocation: ProgramLocation by this::currentLocation
     var currentSelection: ProgramSelection by this::currentSelection
     var currentAddress: Address by this::currentAddress
+    var currentFunction: Function by this::currentFunction
 
     override fun run() {
         val compileConfiguration = createJvmCompilationConfigurationFromTemplate<GhidraKotlinScript>()

@@ -30,6 +30,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "org.jetbrains.kotlin:kotlin-scripting-jvm"
     implementation "org.jetbrains.kotlin:kotlin-scripting-jvm-host"
+    implementation "org.jetbrains.kotlin:kotlin-scripting-dependencies"
+    implementation "org.jetbrains.kotlin:kotlin-scripting-dependencies-maven"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'

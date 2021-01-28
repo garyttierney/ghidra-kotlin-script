@@ -1,7 +1,6 @@
 package com.github.garyttierney.ghidrakt
 
-import com.github.garyttierney.ghidrakt.host.GHIDRA_KOTLIN_SCRIPT_EXTENSION
-
+import com.github.garyttierney.ghidrakt.api.GHIDRA_KOTLIN_SCRIPT_EXTENSION
 import generic.jar.ResourceFile
 import ghidra.app.script.GhidraScript
 import ghidra.app.script.GhidraScriptProvider
