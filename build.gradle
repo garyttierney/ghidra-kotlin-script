@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
 }
 
 group 'com.github.garyttierney'
@@ -8,30 +8,29 @@ version '0.1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url "https://packages.jetbrains.team/maven/p/ij/intellij-dependencies"}
 }
 
 def ghidraInstallDir
 
 if (System.env.GHIDRA_INSTALL_DIR) {
     ghidraInstallDir = System.env.GHIDRA_INSTALL_DIR
-}
-else if (project.hasProperty("GHIDRA_INSTALL_DIR")) {
+} else if (project.hasProperty("GHIDRA_INSTALL_DIR")) {
     ghidraInstallDir = project.getProperty("GHIDRA_INSTALL_DIR")
 }
 
 if (ghidraInstallDir) {
     apply from: new File(ghidraInstallDir).getCanonicalPath() + "/support/buildExtension.gradle"
-}
-else {
+} else {
     throw new GradleException("GHIDRA_INSTALL_DIR is not defined!")
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation "org.jetbrains.kotlin:kotlin-scripting-jvm"
-    implementation "org.jetbrains.kotlin:kotlin-scripting-jvm-host"
-    implementation "org.jetbrains.kotlin:kotlin-scripting-dependencies"
-    implementation "org.jetbrains.kotlin:kotlin-scripting-dependencies-maven"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.0"
+    implementation "org.jetbrains.kotlinx:ki-shell:0.5.1"
+
+    implementation 'com.github.JetBrains:jediterm:master-SNAPSHOT'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -48,22 +47,6 @@ test {
     useJUnitPlatform()
 }
 
-// Include the code below if you want dependency jars to be automatically managed
-
-task copyDependencies(type: Copy) {
-    from configurations.default
-    into "lib"
-    exclude {fileTreeElement ->
-        def fileAbsPath = fileTreeElement.getFile().getCanonicalFile().toPath()
-        // Avoid including Ghidra Jars in lib folder...
-        def isGhidraJar = fileAbsPath.startsWith(ghidraInstallDir)
-        // ...and jars already in the destination location
-        def destLibDir = project.file("lib").getCanonicalFile().toPath()
-        def isFromDest = fileAbsPath.startsWith(destLibDir)
-        return isGhidraJar || isFromDest
-    }
-}
-
 task cleanDependencyJars(type: Delete) {
     delete fileTree("lib").matching {
         include "**/*.jar"
@@ -71,5 +54,4 @@ task cleanDependencyJars(type: Delete) {
 }
 
 tasks.buildExtension.dependsOn(copyDependencies)
-tasks.copyDependencies.dependsOn(cleanDependencyJars)
 tasks.clean.dependsOn(cleanDependencyJars)

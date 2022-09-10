@@ -1,4 +1,4 @@
-package com.github.garyttierney.ghidrakt.host
+package com.github.garyttierney.ghidrakt.host.script
 
 import kotlinx.coroutines.runBlocking
 import kotlin.script.experimental.api.*
@@ -7,7 +7,7 @@ import kotlin.script.experimental.dependencies.maven.impl.mavenCentral
 import kotlin.script.experimental.dependencies.resolveFromAnnotations
 import kotlin.script.experimental.jvm.updateClasspath
 
-class GhidraKotlinScriptConfigurator : RefineScriptCompilationConfigurationHandler {
+class GhidraScriptConfigurator : RefineScriptCompilationConfigurationHandler {
     override fun invoke(context: ScriptConfigurationRefinementContext): ResultWithDiagnostics<ScriptCompilationConfiguration> {
         val diagnostics = arrayListOf<ScriptDiagnostic>()
         val resolver = MavenDependenciesResolver()

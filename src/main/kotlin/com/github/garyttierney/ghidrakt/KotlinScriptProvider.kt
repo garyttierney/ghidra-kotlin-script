@@ -19,7 +19,7 @@ class KotlinScriptProvider : GhidraScriptProvider() {
     }
 
     override fun getScriptInstance(sourceFile: ResourceFile, writer: PrintWriter): GhidraScript {
-        val kotlinScript = KotlinScript(scriptHost)
+        val kotlinScript = KotlinScriptRunner(scriptHost)
         kotlinScript.sourceFile = sourceFile
 
         return kotlinScript
