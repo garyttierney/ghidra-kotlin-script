@@ -1,0 +1,44 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    name: Build + test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["10.1.5", "nightly"]
+        build_date: ["20220726", "N/A"]
+    env:
+      GHIDRA_INSTALL_DIR: /home/runner/ghidra
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+      - run: |
+          cd "${HOME}"
+          
+          if [ "$GHIDRA_VERSION" == "nightly" ]; then
+            GHIDRA_ZIP="release.zip"
+            GHIDRA_ZIP_URL="https://github.com/roblabla/ghidra-ci/releases/download/latest/${GHIDRA_ZIP}"
+            GHIDRA_REL_SUFFIX="DEV"
+          else
+            GHIDRA_ZIP="ghidra_${GHIDRA_VERSION}_PUBLIC_${GHIDRA_BUILD_DATE}.zip"
+            GHIDRA_ZIP_URL="https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_${GHIDRA_VERSION}_build/${GHIDRA_ZIP}"
+            GHIDRA_REL_SUFFIX="PUBLIC"
+          fi
+
+          curl -sSL "${GHIDRA_ZIP_URL}" -O
+          unzip "${GHIDRA_ZIP}"
+          
+          mv "${HOME}/ghidra_${GHIDRA_VERSION}_${GHIDRA_REL_SUFFIX}" "${HOME}/ghidra"
+        env:
+          GHIDRA_VERSION: ${{ matrix.version }}
+          GHIDRA_BUILD_DATE: ${{ matrix.build_date }}
+      - run: ./gradlew assemble
+      - run: ./gradlew test
